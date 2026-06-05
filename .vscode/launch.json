@@ -1,0 +1,142 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python Debugger: Current File with Arguments",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "args": "${command:pickArgs}"
+        },
+        {
+            "name": "test.py",
+            "type": "python",
+            "program": "./tools/test.py",
+            "request": "launch",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            },
+            "cwd": "/home/cbohn/Mask2Map",
+            "justMyCode": false,
+            "args": [   "./projects/configs/mask2map/M2M_nusc_r50_full_2Phase_12n12ep.py",
+                        "./epoch_12.pth",
+                        "--eval",
+                        "chamfer", 
+                    ]
+        },
+        {
+            "name": "train.py phase 1",
+            "type": "python",
+            "program": "./tools/train.py",
+            "request": "launch",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            },
+            "cwd": "/home/cbohn/Mask2Map",
+            "justMyCode": false,
+            "args": [   "./projects/configs/mask2map/M2M_nusc_r50_full_1Phase_12n12ep_local_debug.py", 
+                    ]
+        },
+        {
+            "name": "train.py phase 2",
+            "type": "python",
+            "program": "./tools/train.py",
+            "request": "launch",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            },
+            "cwd": "/home/cbohn/Mask2Map",
+            "justMyCode": false,
+            "args": [   "./projects/configs/mask2map/M2M_nusc_r50_full_2Phase_12n12ep_local_debug.py", 
+                    ]
+        },
+        {
+            "name": " train.py phase 1 distributed",
+            "type": "python",
+            "module": "torch.distributed.launch",
+            "request": "launch",
+            "console": "integratedTerminal",
+            "cwd": "/home/cbohn/Mask2Map",
+            "justMyCode": false,
+            "args": [
+                "--nproc_per_node=1",
+                "--master_port=29503",
+                "./tools/train.py",
+                "./projects/configs/mask2map/M2M_nusc_r50_full_1Phase_12n12ep.py",
+                "--resume-from='/home/cbohn/Mask2Map/epoch_4.pth'"
+            ],
+            "env": {
+                "TORCH_DISTRIBUTED_DEBUG": "INFO",
+                "NCCL_DEBUG": "INFO",
+                "MLGEARS_FRAMEWORK": "torch",
+                "PYTHONPATH": ".:$PYTHONPATH"
+            }
+        },
+        {
+            "name": " train.py phase 2 distributed",
+            "type": "python",
+            "module": "torch.distributed.launch",
+            "request": "launch",
+            "console": "integratedTerminal",
+            "cwd": "/home/cbohn/Mask2Map",
+            "justMyCode": false,
+            "args": [
+                "--nproc_per_node=1",
+                "--master_port=29503",
+                "./tools/train.py",
+                "./projects/configs/mask2map/M2M_nusc_r50_full_2Phase_12n12ep.py"
+            ],
+            "env": {
+                "TORCH_DISTRIBUTED_DEBUG": "INFO",
+                "NCCL_DEBUG": "INFO",
+                "MLGEARS_FRAMEWORK": "torch",
+                "PYTHONPATH": ".:$PYTHONPATH"
+            }
+        },
+        {
+            "name": "custom_nusc_map_converter.py",
+            "type": "python",
+            "program": "./tools/maptrv2/custom_nusc_map_converter.py",
+            "request": "launch",
+            "console": "integratedTerminal",
+            "cwd": "/home/cbohn/Mask2Map",
+            "justMyCode": false,
+            "args": [   "--root-path",
+                        "./data/nuscenes",
+                        "--out-dir",
+                        "./test",
+                        "--extra-tag",
+                        "nuscenes",
+                        "--version",
+                        "v1.0",
+                        "--canbus",
+                        "./data", 
+                    ]
+        },
+        {
+            "name": "vis_pred.py",
+            "type": "python",
+            "program": "./tools/maptr/vis_pred.py",
+            "request": "launch",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            },
+            "cwd": "/home/cbohn/Mask2Map",
+            "justMyCode": false,
+            "args": [   "./projects/configs/mask2map/M2M_nusc_r50_full_2Phase_12n12ep.py",
+                        "./epoch_4.pth",
+                        "--show-dir", 
+                        "./visualization",
+                    ]
+        },
+    ]
+}
+
